@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId           String   @map("user_id")
+  type             String
+  provider         String
+  providerAccountId String   @map("provider_account_id")
+  refresh_token    String?  @db.Text
+  access_token     String?  @db.Text
+  expires_at       Int?
+  token_type       String?
+  scope            String?
+  id_token         String?  @db.Text
+  session_state    String?
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @default(now()) @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?      @map("email_verified")
+  image         String?
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @default(now()) @map("updated_at")
+  accounts      Account[]
+  sessions      Session[]
+  articles      Article[]
+  cadModels     CADModel[]
+  savedArticles SavedArticle[]
+  savedCADModels SavedCADModel[]
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @map("updated_at")
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Article {
+  id          String         @id @default(uuid())
+  title       String
+  content     String
+  status      String         @default("draft")
+  userId      String         @map("user_id")
+  publishedAt DateTime?      @map("published_at")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @default(now()) @map("updated_at")
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stats       Stats?         @relation("ArticleStats")
+  savedBy     SavedArticle[]
+
+  @@map("articles")
+}
+
+model CADModel {
+  id           String          @id @default(uuid())
+  name         String
+  description  String?
+  fileUrl      String          @map("file_url")
+  thumbnailUrl String?         @map("thumbnail_url")
+  userId       String          @map("user_id")
+  status       String          @default("private")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @default(now()) @map("updated_at")
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stats        Stats?          @relation("CADModelStats")
+  savedBy      SavedCADModel[]
+
+  @@map("cad_models")
+}
+
+model Stats {
+  id         String    @id @default(uuid())
+  targetType String    @map("target_type")
+  targetId   String    @unique @map("target_id")
+  views      Int       @default(0)
+  likes      Int       @default(0)
+  comments   Int       @default(0)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @default(now()) @map("updated_at")
+  article    Article?  @relation("ArticleStats", fields: [targetId], references: [id], map: "stats_article_id_fkey", onDelete: Cascade)
+  cadModel   CADModel? @relation("CADModelStats", fields: [targetId], references: [id], map: "stats_cad_model_id_fkey", onDelete: Cascade)
+
+  @@map("stats")
+}
+
+model SavedArticle {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  articleId String   @map("article_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, articleId])
+  @@map("saved_articles")
+}
+
+model SavedCADModel {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  cadModelId String   @map("cad_model_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @map("updated_at")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cadModel   CADModel @relation(fields: [cadModelId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cadModelId])
+  @@map("saved_cad_models")
+} 

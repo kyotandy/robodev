@@ -110,9 +110,6 @@ export default function RecentArticles() {
                 </CardHeader>
                 
                 <CardContent className="p-0 flex-grow">
-                  <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
-                    {article.excerpt}
-                  </p>
                   
                   <div className="flex items-center space-x-3">
                     <div className="relative h-6 w-6 rounded-full overflow-hidden">

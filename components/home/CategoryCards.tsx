@@ -1,19 +1,19 @@
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Cpu, HardDrive, Code, Zap } from "lucide-react"
+import { Wrench, Code, Zap } from "lucide-react"
 
 const categories = [
   {
-    title: "メカ",
+    title: "ハードウェア",
     description: "機械設計、アクチュエータ、センサー、物理的な部品について",
-    icon: HardDrive,
+    icon: Wrench,
     color: "text-blue-500",
     bgColor: "bg-blue-500/10",
     href: "/category/hardware",
     count: 124
   },
   {
-    title: "ソフト",
+    title: "ソフトウェア",
     description: "組込みシステム、アルゴリズム、機械学習、制御システムの開発",
     icon: Code,
     color: "text-purple-500",
@@ -22,7 +22,7 @@ const categories = [
     count: 245
   },
   {
-    title: "電気・電子",
+    title: "エレクトロニクス",
     description: "回路設計、PCB、電源システム、電子部品について",
     icon: Zap,
     color: "text-amber-500",

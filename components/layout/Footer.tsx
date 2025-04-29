@@ -31,17 +31,17 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link href="/category/hardware" className="text-sm text-muted-foreground hover:text-foreground">
-                  メカ
+                  メカニカル
                 </Link>
               </li>
               <li>
                 <Link href="/category/software" className="text-sm text-muted-foreground hover:text-foreground">
-                  ソフト
+                  ソフトウェア
                 </Link>
               </li>
               <li>
                 <Link href="/category/electronics" className="text-sm text-muted-foreground hover:text-foreground">
-                  電気・電子
+                  エレクトロニクス
                 </Link>
               </li>
             </ul>

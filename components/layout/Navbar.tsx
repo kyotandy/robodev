@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useTheme } from "next-themes"
-import { Search, Menu, X, Sun, Moon, PenSquare } from "lucide-react"
+import { Search, Menu, X, Sun, Moon, Plus, PenSquare, FileUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import AuthModal from "@/components/auth/AuthModal"
+import { useSession, signOut } from "next-auth/react"
 
 const categories = [
   { name: "Hardware", href: "/category/hardware" },
@@ -23,8 +23,7 @@ const categories = [
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme()
-  const [showAuthModal, setShowAuthModal] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false) // Mock state, replace with real auth
+  const { data: session } = useSession()
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -38,7 +37,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-8">
+          <div className="hidden md:flex md:items-center md:space-x-4 ml-12">
             {categories.map((category) => (
               <Link
                 key={category.name}
@@ -89,33 +88,51 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {isLoggedIn ? (
+            {session ? (
               <>
                 <Button variant="ghost" size="sm" asChild>
                   <Link href="/dashboard">Dashboard</Link>
                 </Button>
-                <Button asChild>
-                  <Link href="/articles/create">
-                    <PenSquare className="mr-2 h-4 w-4" />
-                    Write
-                  </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button>
+                      <Plus className="mr-2 h-4 w-4" />
+                      New
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <a href="/articles/create" className="flex items-center">
+                        <PenSquare className="mr-2 h-4 w-4" />
+                        記事作成
+                      </a>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <a href="/cad-models/upload" className="flex items-center">
+                        <FileUp className="mr-2 h-4 w-4" />
+                        CADモデルアップロード
+                      </a>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => signOut()}
+                >
+                  Log out
                 </Button>
               </>
             ) : (
-              <>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setShowAuthModal(true)}
-                >
-                  Sign In
-                </Button>
-                <Button 
-                  onClick={() => setShowAuthModal(true)}
-                >
-                  Sign Up
-                </Button>
-              </>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                asChild
+              >
+                <Link href="/api/auth/signin">
+                  ログイン
+                </Link>
+              </Button>
             )}
           </div>
 
@@ -172,38 +189,51 @@ export default function Navbar() {
                   </div>
 
                   <div className="mt-6 space-y-4">
-                    {isLoggedIn ? (
+                    {session ? (
                       <>
                         <Button variant="ghost" asChild className="w-full justify-start">
                           <Link href="/dashboard">Dashboard</Link>
                         </Button>
-                        <Button asChild className="w-full">
-                          <Link href="/articles/create">
-                            <PenSquare className="mr-2 h-4 w-4" />
-                            Write Article
-                          </Link>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button className="w-full">
+                              <Plus className="mr-2 h-4 w-4" />
+                              New
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem asChild>
+                              <a href="/articles/create" className="flex items-center">
+                                <PenSquare className="mr-2 h-4 w-4" />
+                                記事作成
+                              </a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                              <a href="/cad-models/upload" className="flex items-center">
+                                <FileUp className="mr-2 h-4 w-4" />
+                                CADモデルアップロード
+                              </a>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                        <Button 
+                          variant="ghost"
+                          className="w-full justify-start"
+                          onClick={() => signOut()}
+                        >
+                          Log out
                         </Button>
                       </>
                     ) : (
-                      <>
-                        <Button 
-                          variant="ghost" 
-                          className="w-full" 
-                          onClick={() => {
-                            setShowAuthModal(true)
-                          }}
-                        >
-                          Sign In
-                        </Button>
-                        <Button 
-                          className="w-full"
-                          onClick={() => {
-                            setShowAuthModal(true)
-                          }}
-                        >
-                          Sign Up
-                        </Button>
-                      </>
+                      <Button 
+                        variant="ghost" 
+                        className="w-full justify-start"
+                        asChild
+                      >
+                        <Link href="/api/auth/signin">
+                          ログイン
+                        </Link>
+                      </Button>
                     )}
                   </div>
 
@@ -218,10 +248,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-
-      {showAuthModal && (
-        <AuthModal onClose={() => setShowAuthModal(false)} />
-      )}
     </nav>
   )
 }
