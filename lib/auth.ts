@@ -1,8 +1,12 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import { NextAuthOptions } from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
 import { prisma } from "./prisma"
+
+if (!process.env.GITHUB_ID || !process.env.GITHUB_SECRET) {
+  throw new Error("Missing GitHub OAuth credentials")
+}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -11,8 +15,8 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -38,5 +42,9 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     }
-  }
+  },
+  // デフォルトのサインインページを使用するため、この設定を削除
+  // pages: {
+  //   signIn: "/auth/signin",
+  // },
 } 

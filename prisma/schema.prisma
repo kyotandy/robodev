@@ -77,13 +77,14 @@ model Article {
   id          String         @id @default(uuid())
   title       String
   content     String
-  status      String         @default("draft")
-  userId      String         @map("user_id")
-  publishedAt DateTime?      @map("published_at")
-  createdAt   DateTime       @default(now()) @map("created_at")
-  updatedAt   DateTime       @default(now()) @map("updated_at")
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stats       Stats?         @relation("ArticleStats")
+  category    String?
+  status      String        @default("draft")
+  userId      String        @map("user_id")
+  publishedAt DateTime?     @map("published_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @default(now()) @map("updated_at")
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stats       Stats?        @relation("ArticleStats")
   savedBy     SavedArticle[]
 
   @@map("articles")

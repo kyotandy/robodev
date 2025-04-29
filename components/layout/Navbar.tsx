@@ -101,17 +101,17 @@ export default function Navbar() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
-                      <a href="/articles/create" className="flex items-center">
+                    <DropdownMenuItem>
+                      <Link href="/articles/create" className="flex items-center w-full">
                         <PenSquare className="mr-2 h-4 w-4" />
                         記事作成
-                      </a>
+                      </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <a href="/cad-models/upload" className="flex items-center">
+                    <DropdownMenuItem>
+                      <Link href="/cad-models/create" className="flex items-center w-full">
                         <FileUp className="mr-2 h-4 w-4" />
                         CADモデルアップロード
-                      </a>
+                      </Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -202,17 +202,17 @@ export default function Navbar() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent>
-                            <DropdownMenuItem asChild>
-                              <a href="/articles/create" className="flex items-center">
+                            <DropdownMenuItem>
+                              <Link href="/articles/create" className="flex items-center w-full">
                                 <PenSquare className="mr-2 h-4 w-4" />
                                 記事作成
-                              </a>
+                              </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <a href="/cad-models/upload" className="flex items-center">
+                            <DropdownMenuItem>
+                              <Link href="/cad-models/create" className="flex items-center w-full">
                                 <FileUp className="mr-2 h-4 w-4" />
                                 CADモデルアップロード
-                              </a>
+                              </Link>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
