@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
 import { ThumbsUp, Reply, Flag, Loader2 } from "lucide-react"
 
 // Mock data - would come from a database in a real app

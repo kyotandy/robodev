@@ -4,9 +4,9 @@ import { Separator } from '@/components/ui/separator'
 import { notFound } from 'next/navigation'
 
 const CATEGORIES = {
-  hardware: 'メカ',
-  software: 'ソフト',
-  electronics: '電気・電子'
+  hardware: 'ハードウェア',
+  software: 'ソフトウェア',
+  electronics: 'エレクトロニクス'
 }
 
 const VALID_CATEGORIES = Object.keys(CATEGORIES)

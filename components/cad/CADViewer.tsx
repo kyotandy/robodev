@@ -1,8 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { Canvas } from "@react-three/fiber"
-import { OrbitControls, Stage } from "@react-three/drei"
+import dynamic from 'next/dynamic'
+import { useEffect, useRef, useState, Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
@@ -13,14 +12,15 @@ interface CADViewerProps {
   modelUrl: string
 }
 
-function Model() {
-  return (
-    <mesh>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="orange" />
-    </mesh>
+// Three.jsコンポーネントを動的インポート
+const ThreeScene = dynamic(() => import('./ThreeScene'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+    </div>
   )
-}
+})
 
 export default function CADViewer({ modelUrl }: CADViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -153,14 +153,7 @@ export default function CADViewer({ modelUrl }: CADViewerProps) {
         </Tabs>
       </div>
       
-      <Canvas shadows camera={{ position: [0, 0, 5], fov: 50 }}>
-        <ambientLight intensity={0.5} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-        <Stage environment="city" intensity={0.6}>
-          <Model />
-        </Stage>
-        <OrbitControls makeDefault />
-      </Canvas>
+      <ThreeScene />
     </div>
   )
 }

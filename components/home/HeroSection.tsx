@@ -30,8 +30,9 @@ export default function HeroSection() {
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-            Share your robotics expertise, showcase CAD designs, and connect with a community 
-            of hardware engineers, embedded programmers, and robot enthusiasts.
+          知識を共有し、価値を創造する。<br />
+          ハードウェア、ソフトウェア、エレクトロニクスの垣根を越えて、<br />
+          ロボティクスの未来を共に築くプラットフォーム
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
