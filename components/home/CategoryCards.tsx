@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Wrench, Code, Zap } from "lucide-react"
+import { Wrench, Code, Zap, Cpu, Cuboid } from "lucide-react"
 
 const categories = [
   {
@@ -29,6 +29,24 @@ const categories = [
     bgColor: "bg-amber-500/10",
     href: "/category/electronics",
     count: 103
+  },
+  {
+    title: "インテグレーション",
+    description: "システム統合、インターフェース設計、通信プロトコルについて",
+    icon: Cpu,
+    color: "text-green-500",
+    bgColor: "bg-green-500/10",
+    href: "/category/integration",
+    count: 87
+  },
+  {
+    title: "CAD",
+    description: "3Dモデル、設計データ、CADリソースの共有と探索",
+    icon: Cuboid,
+    color: "text-cyan-600",
+    bgColor: "bg-cyan-400/10",
+    href: "/models",
+    count: 56
   }
 ]
 
